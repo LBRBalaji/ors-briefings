@@ -1,5 +1,5 @@
 # ORS-ONE Platform — Claude Briefing Document
-**Last updated: April 2026 · Maintained in: `LBRBalaji/orsone-home`**
+**Last updated: 2 May 2026 · Maintained in: `LBRBalaji/orsone-home`**
 
 > This file is the single source of truth for any Claude session working on ORS-ONE properties.
 > Read this before touching any file. Never make assumptions — always verify with `grep -n` first.
@@ -30,7 +30,7 @@ Public-facing platforms for property sourcing and transactions. Each is a standa
 | Source Land | [land.orsone.app](https://land.orsone.app) | Industrial land: source → site verify → title verify → sellers verify |
 | Source Commercial | [source-commercial.orsone.app](https://source-commercial.orsone.app) | Commercial real estate sourcing |
 | Residential | [howaah.orsone.app](https://howaah.orsone.app) | Residential property sourcing |
-| ORS-ONE Hub | [orsone.app](https://orsone.app) | Public homepage — no login, links to all apps |
+| ORS-ONE Hub | [lakshmibalajio2o.com](https://lakshmibalajio2o.com) | Public homepage — no login, links to all apps. Migrating from orsone.app → lakshmibalajio2o.com (2 May 2026) |
 
 ### Family 2 — Land Transaction Platform (land.orsone.app)
 An integrated 9-module platform built in React/Vite. Two stages:
@@ -66,13 +66,17 @@ An integrated 9-module platform built in React/Vite. Two stages:
 | GitHub PAT | `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | Remote URL format | `https://{token}@github.com/LBRBalaji/ors-trace-origin.git` |
 
-### orsone.app (orsone-home)
+### orsone.app → lakshmibalajio2o.com (orsone-home)
 | Layer | Technology |
 |-------|-----------|
 | Type | Pure static HTML/CSS/JS — single `index.html` file |
 | Hosting | Vercel — auto-deploys on `git push origin main` |
 | Repo | `LBRBalaji/orsone-home` (public) |
 | GitHub PAT | Same PAT as above |
+| Previous domain | `orsone.app` — was primary, now migrating |
+| New primary domain | `lakshmibalajio2o.com` — GoDaddy DNS pending (A record `76.76.21.21` + www CNAME) |
+| Redirect | `orsone.app` → `lakshmibalajio2o.com` (301 permanent, to be set in GoDaddy forwarding) |
+| Vercel project | `lbrbalajis-projects/orsone-home` |
 
 ### lease.orsone.app (ORS-ONE Warehouse)
 | Layer | Technology |
@@ -360,6 +364,15 @@ evaluate-6f1bf       → Evaluate (land_reports collection)
 - [x] Mobile responsive — hamburger drawer, all grids collapse at 960px and 600px
 - [x] Vercel deployment via `LBRBalaji/orsone-home` GitHub repo
 
+**2 May 2026 — Domain migration & rebrand (orsone-home)**
+- [x] Page `<title>` updated: `ORS-ONE — Property Sourcing Platform` → `Lakshmi Balaji O2O — Property Sourcing Platform | Industrial · Commercial · Residential`
+- [x] All `land.orsone.app` references (display text + href links + form options + footer links) updated → `haanest.app`
+- [x] Infrastructure Map tool link: `lakshmibalajio2o.com` → `map.lakshmibalajio2o.com` (display text + href)
+- [x] `lakshmibalajio2o.com` tool link display text updated to `map.lakshmibalajio2o.com ↗`
+- [x] All changes committed and pushed → Vercel auto-deployed (`orsone-home` repo, commit `6b52011`)
+- [x] `lease.orsone.app`, `howaah.orsone.app`, `sambandhaar.orsone.app`, `source-commercial.orsone.app` — left unchanged (separate live apps)
+- [x] Email addresses (`balaji@lakshmibalajio2o.com`) — left unchanged
+
 ### land.orsone.app — Stage 1
 - [x] Deal Board — live demands, BCD model, Google Maps Drawing Manager, auth gate
 - [x] Tracker — pipeline management
@@ -402,7 +415,9 @@ evaluate-6f1bf       → Evaluate (land_reports collection)
 - [ ] Predictive Analytics — marked "Coming Soon" (Gemini 1.5-flash deprecated, pending migration to gemini-2.0-flash)
 - [ ] AI description generation — same, marked "Coming Soon"
 - [ ] Data Governance tools (Manage Users: Transfer Listings, Transfer Leads, Merge Accounts, Deactivate & Reassign, Company Rebrand) — built in ORS-ONE Warehouse (`purplebox`), not yet in land platform
-- [ ] orsone.app GoDaddy DNS — A record needs pointing to Vercel project for `orsone.app`. Currently may still point to old Deal Board deployment.
+- [ ] `lakshmibalajio2o.com` GoDaddy DNS — needs `A @ 76.76.21.21` and `CNAME www cname.vercel-dns.com.` pointing to Vercel `orsone-home` project. Conflicting `www` A records may need deletion first (same issue as haanest.app).
+- [ ] `orsone.app` GoDaddy forwarding — set 301 redirect → `https://lakshmibalajio2o.com` once lakshmibalajio2o.com DNS is confirmed live.
+- [ ] Remove `lakshmibalajio2o.com` from old Netlify site once Vercel takes over.
 - [ ] source-commercial.orsone.app and howaah.orsone.app — listed on orsone.app but content/status not confirmed
 - [ ] Community platform (`lease.orsone.app/community`) — live and functional but not integrated with land platform
 
@@ -496,6 +511,7 @@ This platform has been built incrementally over many sessions. Key milestones:
 | DealBoard | Auth gate restored, Google Maps Drawing Manager, BCD model, scroll fixed |
 | User Management | Full Zoho-quality UX — stat cards, rich table, app-wise access cards, create form with live preview |
 | Colour migration | Entire Stage 2 migrated from purple `#6141ac` → blue `#1d9bf0`, lavender bg → warm off-white `#fafaf8`. 91 replacements across 32 files. AppShell and tokens.js updated. |
+| 2 May 2026 — orsone-home migration | Page title updated to `Lakshmi Balaji O2O`. All `land.orsone.app` links/text → `haanest.app`. Infra map tool link → `map.lakshmibalajio2o.com`. Committed + deployed. DNS migration to `lakshmibalajio2o.com` in progress (GoDaddy pending). |
 | Evaluate | Data loading fixed (wrong Firebase project imported), Zoho landing redesigned, correct colour theme |
 | orsone.app | Homepage built — first version, then warehouse content corrected from live site, mobile responsiveness added, then full redesign to LynkGrids single-colour editorial style |
 | LandMap | Toolbar fixed to single row (search + type + category) |
