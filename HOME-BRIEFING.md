@@ -14,8 +14,8 @@
 
 ORS-ONE is a suite of operational web applications for real estate transactions in India, owned and operated by **Lakshmi Balaji ORS Private Limited**, Chennai.
 
-**Primary tagline:** Building Transaction Ready Assets  
-**Secondary tagline:** Transactions Simplified  
+**Primary tagline:** Know Ground Reality — A Honest Report  
+**Secondary tagline:** Verification Report on Site I Title I Seller  
 **Super admin:** `balaji@lakshmibalajio2o.com` (hardcoded, cannot be revoked, always has full access)  
 **Business owner:** Balaji Aram Valartha Sundaram (non-developer, directs all technical development)
 
@@ -26,8 +26,8 @@ Public-facing platforms for property sourcing and transactions. Each is a standa
 
 | App | URL | Purpose |
 |-----|-----|---------|
-| Source Warehouse | [lease.orsone.app](https://lease.orsone.app) | India's warehouse leasing marketplace — BCD model |
-| Source Land | [land.orsone.app](https://land.orsone.app) | Industrial land: source → site verify → title verify → sellers verify |
+| Source Warehouse | [orsone.app](https://orsone.app) | India's warehouse leasing marketplace — BCD model (migrated from lease.orsone.app May 2026) |
+| Source Land | [haanest.app](https://haanest.app) | Industrial land: source → site verify → title verify → sellers verify (migrated from land.orsone.app May 2026) |
 | Source Commercial | [source-commercial.orsone.app](https://source-commercial.orsone.app) | Commercial real estate sourcing |
 | Residential | [howaah.orsone.app](https://howaah.orsone.app) | Residential property sourcing |
 | ORS-ONE Hub | [lakshmibalajio2o.com](https://lakshmibalajio2o.com) | Public homepage — no login, links to all apps. Migrating from orsone.app → lakshmibalajio2o.com (2 May 2026) |
@@ -339,7 +339,7 @@ evaluate-6f1bf       → Evaluate (land_reports collection)
 | `src/modules/ORS3/views/` | Overview, Heir Analysis, Family Trees, Settlement Audit, Print Report |
 | `src/modules/ORSR/index.jsx` | Title Report module |
 
-### orsone.app (`LBRBalaji/orsone-home`)
+### lakshmibalajio2o.com (`LBRBalaji/orsone-home`)
 
 | File | Purpose |
 |------|---------|
@@ -351,10 +351,10 @@ evaluate-6f1bf       → Evaluate (land_reports collection)
 
 ## 9. Completed Features (as of April 2026)
 
-### orsone.app
+### lakshmibalajio2o.com (migrated from orsone.app — May 2026)
 - [x] Full homepage — LynkGrids-inspired design, single `#0055FF` accent, no multi-colour
 - [x] Correct warehouse content — BCD model, 20yr/3.5M sq ft credibility, Instant Download story
-- [x] land.orsone.app section — 4-step journey (Source → Site Verified → Title Verified → Sellers Verified)
+- [x] haanest.app section — 4-step journey (Source → Site Verified → Title Verified → Sellers Verified)
 - [x] Commercial and Residential app sections
 - [x] Tools grid (9 tools), Knowledge Hub, YouTube cards
 - [x] For Who section (Clients / Developers / Brokers)
@@ -363,6 +363,10 @@ evaluate-6f1bf       → Evaluate (land_reports collection)
 - [x] Footer — brand, contact, app links, tools links
 - [x] Mobile responsive — hamburger drawer, all grids collapse at 960px and 600px
 - [x] Vercel deployment via `LBRBalaji/orsone-home` GitHub repo
+- [x] **May 2026 — Domain migration:** `orsone.app` → `lakshmibalajio2o.com` (Vercel domain config + GoDaddy DNS)
+- [x] **May 2026 — Rebrand:** Page title updated to `Lakshmi Balaji O2O — Property Sourcing Platform`
+- [x] **May 2026 — Link updates:** `land.orsone.app` → `haanest.app` throughout; infra map tool link → `map.lakshmibalajio2o.com`
+- [x] **May 2026 — Infrastructure map split:** Map site moved from `lakshmibalajio2o.com` → `map.lakshmibalajio2o.com` (Netlify → Vercel)
 
 **2 May 2026 — Domain migration & rebrand (orsone-home)**
 - [x] Page `<title>` updated: `ORS-ONE — Property Sourcing Platform` → `Lakshmi Balaji O2O — Property Sourcing Platform | Industrial · Commercial · Residential`
@@ -518,6 +522,8 @@ This platform has been built incrementally over many sessions. Key milestones:
 | Login | Modal redesigned to blue/navy unified theme |
 | Post-login | LandingPage replaced with personalised dashboard — greeting + accessible app tiles |
 | Admin | Complete UX rebuild — stat header, hover-reveal row actions, UserRecord with app cards, UserForm with stepped layout and live preview |
+| **May 2026 — Domain migrations** | `lease.orsone.app` → `orsone.app` (DNS in progress — www CNAME conflict to resolve). `land.orsone.app` → `haanest.app` (DNS pending). `lakshmibalajio2o.com` (map site) → `map.lakshmibalajio2o.com`, Netlify → Vercel (import pending). `orsone.app` homepage → `lakshmibalajio2o.com` (Vercel config + DNS pending). |
+| **May 2026 — Rebrand orsone-home** | Page title: `ORS-ONE` → `Lakshmi Balaji O2O`. All `land.orsone.app` display text and links → `haanest.app`. Infra map tool link → `map.lakshmibalajio2o.com`. Committed to `orsone-home` repo, auto-deployed to Vercel. |
 
 ---
 
