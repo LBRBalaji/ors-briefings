@@ -2,7 +2,7 @@
 **Repo:** `LBRBalaji/ors-trace-origin` (private)  
 **Live:** [haanest.app](https://haanest.app)  
 **Previous URL:** land.orsone.app (retired — redirects to haanest.app)  
-**Last updated:** May 2026  
+**Last updated:** 3 May 2026  
 **PAT:** `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
 > Read this before touching any file. Verify with `grep -n` before every edit.  
@@ -644,4 +644,88 @@ grep -rn "#1a3a5c\|#1d9bf0\|#6141ac\|97,65,172\|hsl(259" src/ --include="*.jsx" 
 
 ---
 
-*Update this file at the end of every session. Commit to `LBRBalaji/ors-briefings` repo, file `LAND-BRIEFING.md`.*
+## 15. 3 May 2026 — Changes & Fixes (today's session)
+
+### Homepage (`src/pages/HomePage.jsx`) — restructured
+
+**Section order fixed:**
+Evaluate → Output (moved here, part of Evaluate) → Trust Bar → Title Analysis → Land Sourcing
+
+**New sections added:**
+- **Trust Bar** (pine green) — "Half Acre or Hundred Acres. Be Sure of Your Investment. / Scale doesn't change the Risk. Get Evaluated: Risks | Challenges | Opportunities."
+- **Title Analysis description** — three cards (Ownership / Reconciliation / Succession, each with Record Input / Gap Analysis / Heir Analysis labels) + Report strip (4 bullet points: Transaction Scorecard, Risk Flags, Mitigation Roadmap, Site & Seller Audit)
+- **Land Sourcing** rebuilt — "Green Field" in pine green + "Brown Field" in khaki, new hero title ("Like it or Not, Real Estate is a Minefield."), 5-row stage table (Stage | The Pain | The HAAnest Solution)
+
+**Colour fix:** All `#0f1419` (black) backgrounds replaced with `#014a45` (dark teal) or `#01796F` (pine green). No black backgrounds remain.
+
+**Mobile responsive:** All grids collapse ≤768px. `hp-hero-sect` gets `padding: 56px 20px 48px` on mobile.
+
+**"Evaluate Your Land" highlight:** Rendered at 20px, font-weight 900, full white — stands out from surrounding tagline text.
+
+**All CTA buttons:** `borderRadius: 0` (flat, no rounding) throughout.
+
+### AppShell (`src/components/AppShell.jsx`)
+
+- **Breadcrumb removed:** Home / DB-APP / module-name links removed from AppShell header left side. Navigation entirely via hamburger.
+- **Tagline — single line only:** Second line "Verification Report: Site | Title | Seller" removed from all header brand blocks. Only `Know Ground Reality — A HONEST Report` remains in headers.
+- **All module headers WHITE:** Background changed from dark green `#01796F` to `#fff`. Wordmark uses `haanest-wordmark-trans.png` (coloured text on transparent).
+
+### Deal Board search moved to AppShell header
+
+- Floating `#floating-search` div removed from `DemandsListView.jsx`
+- State `dbSearch` lifted to `DealBoard/index.jsx`
+- Compact flat search input rendered in AppShell `actions` prop
+- Passed as `externalSearch` prop to `DemandsListView`
+- Layout offsets corrected: `padding-top: 116px` (was 162px — floating search was 46px of that)
+- Sidebars: `top: 112px; height: calc(100vh - 112px)`
+
+### Tracker — Evaluate button restored
+
+`openEvaluate(s)` in `SiteCard.jsx` — mirrors original `tracker.html` logic. Opens `/evaluate?siteId=...&coord=...&village=...&acres=...` in new tab. Evaluate reads these URL params on mount and prefills S01 fields, then opens Input view directly.
+
+### Evaluate — prefill from URL params (new)
+
+On mount, reads `siteId`, `coord`, `village`, `landmark`, `acres`, `district`, `taluk` from URL query string. Maps to form fields and opens Input view. URL cleaned after reading (no re-prefill on refresh).
+
+### LandMap — timeout and clear error (code fix)
+
+`loadGoogleMaps()` now has an 8-second timeout. If the `_mapReadyLM` callback doesn't fire (referrer blocked), rejects with a clear message. Previously hung silently forever showing "Loading map…".
+
+**Root cause:** Maps API key `AIzaSyCON67DgHi7fBa0C3TpbEPuAB4FwhsnIY8` missing `www.haanest.app/*` in HTTP referrers. **Balaji must add in Google Cloud Console:**
+```
+haanest.app   haanest.app/*   www.haanest.app   www.haanest.app/*
+```
+
+### Field Connect (`ORSFC`)
+
+Rebuilt as full-screen iframe serving `/public/fieldconnect.html`. The original 1,644-line working HTML app is used as-is — no React rewrite. haanest theme applied directly to the HTML (pine green colours, wordmark in login + header, flat buttons). React wrapper adds AppHeader with hamburger.
+
+### Title Analysis description (new homepage section)
+
+Three-column cards: Ownership (Record Input / Chain of Custody), Reconciliation (Gap Analysis / 12+ Automated Checks), Succession (Heir Analysis / Total Genealogical Clarity). Report strip below (pine green, 4 bullet points with exact copy from brief). Mobile: cards stack to single column.
+
+### Evaluate Admin — User Management rebuilt
+
+Complete rebuild of `AdminView`. Features:
+- Add User form (email, name, role → creates `ors-users` doc on `ors-system-3480b`)
+- Table: User/Email · Status (ACTIVE/ON HOLD/FROZEN) · Role · Evaluate · SVR Field · Platform Mgr · Actions
+- ACTIVATE / HOLD / FREEZE status buttons
+- One-click privilege toggle chips
+- Search filter
+- Superadmin rows protected
+- Uses `dbMain` (static import) — NOT dynamic import (dynamic was the bug)
+
+### Evaluate — auth fixes (root cause resolved)
+
+- `authEval` now correctly imported from `./firebase` (evaluate-6f1bf own auth)
+- Auth listener race condition fixed — two useEffects work in sequence
+- `handleLogin` signs into both Firebase projects simultaneously
+- Firestore rules for evaluate-6f1bf: `allow read, write: if request.auth != null`
+
+### Evaluate-SVR access guard fix
+
+`canAccess('SVR')` in `useAuth.js` has no SVR rule — always returns false. App.jsx now checks `profile?.svr_access || profile?.eval_access || profile?.platform_manager` directly for SVR screen access.
+
+---
+
+*Update this file at the end of every session. Push to `LBRBalaji/ors-briefings`, file `LAND-BRIEFING.md`.*
