@@ -576,3 +576,95 @@ grep -rn "#1a3a5c\|#1d9bf0\|#6141ac" src/ --include="*.jsx" --include="*.js" |
 ---
 
 *Update this file at the end of every session.*
+
+---
+
+## 20. 13 May 2026 — Full Platform Upgrade Session
+
+### User Management (Evaluate AdminView)
+
+**8 new role profiles** in Add User form:
+`admin` · `agent` · `client` · `demand-assistant` · `demand-manager` · `supply-manager` · `transaction-partner` · `custom`
+
+**New fields:** Company · Phone · Access Valid Until (time-bound, enforced by `canAccess`) · Internal Notes
+
+**Demand assignment per user:** Dropdown in each user row → saves `assignedDemandId` to `ors-users`. × REVOKE button removes assignment.
+
+**New `ors-users` fields written on create:**
+```js
+company, phone, db_role, validUntil, notes,
+firstLogin: true, termsAccepted: false
+```
+
+### Terms of Use (first login gate)
+
+After first login, before any screen, `TermsModal` blocks with LBR terms text. User must checkbox + "I Agree". On accept: `termsAccepted: true, firstLogin: false` written to `ors-users`. Immediately followed by `ChangePasswordModal`.
+
+### Password Change (first login)
+
+After terms accepted, `ChangePasswordModal` prompts user to set a password (min 8 chars). Uses `firebase/auth updatePassword()`. Skip option available — can use "Forgot Password" on next login.
+
+### LoginModal — haanest brand
+
+Colours updated from `#1a3a5c`/`#1d9bf0` → `#01796F`/`#8B7355`. Wordmark PNG replaces text. Wording: "Sign in with your official email".
+
+### Client role — demand-specific access
+
+`db_role === 'client'` users in Tracker:
+- Only see **Demand Specific Sites** tab (all other tabs hidden)
+- Filtered to `orsProfile.assignedDemandId` — their demand only
+- `isClient` flag detected in Tracker from `orsProfile.db_role`
+
+### LandMap access
+
+`canAccess('MAP')` now returns true for ANY non-empty `db_role` (was admin/agent only). All 8 new roles can access LandMap.
+
+### Subdomain routing
+
+```js
+siteoptions.haanest.app → Tracker (initialTab: 'TR')
+sitesmap.haanest.app    → LandMap (initialTab: 'MAP')
+```
+Detected via `window.location.hostname.startsWith('siteoptions.')` in App.jsx.
+**Vercel action needed:** Add `siteoptions.haanest.app` and `sitesmap.haanest.app` as custom domains on the same Vercel project (same build, no separate deployment needed).
+
+### Site Validation Report
+
+New component: `src/modules/Tracker/views/SiteValidationReport.jsx`
+Rendered under each site card in Demand Specific Sites tab.
+Stored in: `ors-demand-platform / site-validations / {siteId}`
+
+Fields:
+- **Feasibility** — Feasible / Not Feasible / Maybe (header bar changes colour)
+- **Sale By** — Owner / PoA Agent / Agreement Holder / Aggregator / Other
+- **4 Yes/No/Maybe toggles** — Extent Willing · Portion Willing · Truck Access · Operational Feasibility
+- **Sale Terms / Challenges / Risks** — freeform text
+- **Comments** — any user can post; stored as arrayUnion
+
+Permissions: Admin/Manager = full edit. Client = read-only + comment.
+
+### SiteCard — map pin hidden
+
+"📍 View on Map" link removed from Tracker site cards. Coordinates still stored and available in Edit modal and LandMap.
+
+### Tracker role detection
+
+```js
+const userRole = orsProfile?.db_role || ''
+const isManager = ['admin','demand-manager','supply-manager'].includes(userRole) || isAdmin
+const isClient  = userRole === 'client'
+const canViewAllSites = isAdmin || ['agent','demand-assistant','demand-manager','supply-manager','transaction-partner'].includes(userRole)
+const assignedDemandId = orsProfile?.assignedDemandId || null
+```
+
+### Firestore rules — ors-demand-platform
+
+Added `site-validations` collection: `allow read, write: if true`
+**Apply in Firebase Console → ors-demand-platform → Firestore → Rules.**
+
+### Pending from requirements
+
+- `siteoptions.haanest.app` and `sitesmap.haanest.app` — **Balaji must add as custom domains in Vercel Dashboard** (Project Settings → Domains → Add)
+- Site Feasibility detailed report (separate full-page view)
+- Customer portal (separate auth tier for clients)
+- Demand-based assignment UI (full relational view)
